@@ -1,9 +1,9 @@
 from flask import jsonify, make_response, request, Blueprint
 from . import db_session
-from .news import News
+from .jobs import Jobs
 
 blueprint = Blueprint(
-    'news_api',
+    'jobs_api',
     __name__,
     template_folder='templates'
 )
@@ -12,11 +12,11 @@ blueprint = Blueprint(
 @blueprint.route('/api/jobs')
 def get_news():
     db_sess = db_session.create_session()
-    news = db_sess.query(News).all()
+    jobs = db_sess.query(Jobs).all()
     return jsonify(
         {
-            'news':
-                [item.to_dict(only=('title', 'content', 'user.name'))
-                 for item in news]
+            'jobs':
+                [item.to_dict(only=('id', 'team_leader', 'job', 'collaborators'))
+                 for item in jobs]
         }
     )
